@@ -1,55 +1,78 @@
-class NoticeApp {
-  constructor() {
-    this.notices = [];
-    this.init();
-  }
+// API 엔드포인트
+const API_BASE_URL = "http://localhost:5000/api";
 
-  async init() {
-    await this.fetchNotices();
-    this.renderNotices();
-  }
+// DOM 요소
+const noticeList = document.getElementById("notice-list");
+const noticeDetail = document.getElementById("notice-detail");
+const detailTitle = document.getElementById("detail-title");
+const detailDate = document.getElementById("detail-date");
+const detailCategory = document.getElementById("detail-category");
+const detailBody = document.getElementById("detail-body");
 
-  async fetchNotices() {
-    try {
-      const response = await fetch("/api/notices/recent");
-      this.notices = await response.json();
-    } catch (error) {
-      console.error("공지사항을 불러오는데 실패했습니다:", error);
-    }
-  }
-
-  renderNotices() {
-    const root = document.getElementById("root");
-    const noticeList = document.createElement("div");
-    noticeList.className = "notice-list";
-
-    this.notices.forEach((notice) => {
-      const noticeItem = document.createElement("div");
-      noticeItem.className = "notice-item";
-
-      // 최근 3일 이내 공지는 하이라이트
-      const noticeDate = new Date(notice.date);
-      const threeDaysAgo = new Date();
-      threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
-
-      if (noticeDate >= threeDaysAgo) {
-        noticeItem.classList.add("recent-notice");
-      }
-
-      noticeItem.innerHTML = `
-                <div class="notice-title">${notice.title}</div>
-                <div class="notice-date">${notice.date}</div>
-                <div class="notice-summary">${notice.summary}</div>
-            `;
-
-      noticeList.appendChild(noticeItem);
-    });
-
-    root.appendChild(noticeList);
+// 공지사항 목록 가져오기
+async function fetchNotices() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/notices`);
+    const notices = await response.json();
+    displayNotices(notices);
+  } catch (error) {
+    console.error("공지사항을 가져오는데 실패했습니다:", error);
+    noticeList.innerHTML =
+      '<p class="error">공지사항을 불러오는데 실패했습니다.</p>';
   }
 }
 
-// 앱 초기화
-document.addEventListener("DOMContentLoaded", () => {
-  new NoticeApp();
-});
+// 공지사항 목록 표시
+function displayNotices(notices) {
+  noticeList.innerHTML = notices
+    .map(
+      (notice) => `
+        <div class="notice-item" onclick="showDetail('${notice._id}')">
+            <h3 class="notice-title">${notice.title}</h3>
+            <div class="notice-meta">
+                <span class="notice-date">${formatDate(notice.date)}</span>
+                <span class="notice-category">${notice.category}</span>
+            </div>
+        </div>
+    `
+    )
+    .join("");
+}
+
+// 공지사항 상세 정보 가져오기
+async function showDetail(noticeId) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/notices/${noticeId}`);
+    const notice = await response.json();
+
+    detailTitle.textContent = notice.title;
+    detailDate.textContent = formatDate(notice.date);
+    detailCategory.textContent = notice.category;
+    detailBody.innerHTML = notice.content;
+
+    noticeList.classList.add("hidden");
+    noticeDetail.classList.remove("hidden");
+  } catch (error) {
+    console.error("상세 정보를 가져오는데 실패했습니다:", error);
+    alert("상세 정보를 불러오는데 실패했습니다.");
+  }
+}
+
+// 목록 화면으로 돌아가기
+function showList() {
+  noticeDetail.classList.add("hidden");
+  noticeList.classList.remove("hidden");
+}
+
+// 날짜 포맷팅
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("ko-KR", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
+// 초기 로드
+document.addEventListener("DOMContentLoaded", fetchNotices);
