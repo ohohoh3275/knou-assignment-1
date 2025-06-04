@@ -1,6 +1,7 @@
+from app.models.db_manager import NoticeDBManager
 from flask import Flask, jsonify
 from flask_cors import CORS
-from db_manager import DBManager
+# from db_manager import DBManager
 from app.crawler.notice_crawler import NoticeCrawler
 import os
 from dotenv import load_dotenv
@@ -13,27 +14,27 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 # MongoDB 연결
-db_manager = DBManager()
+db_manager = NoticeDBManager()
 # 크롤러 초기화
 crawler = NoticeCrawler()
 
-@app.route('/notices', methods=['GET'])
+@app.route('/api/notices', methods=['GET'])
 def get_notices():
     notices = db_manager.get_all_notices()
     return jsonify(notices)
 
-@app.route('/notices/<notice_id>', methods=['GET'])
+@app.route('/api/notices/<notice_id>', methods=['GET'])
 def get_notice(notice_id):
     notice = db_manager.get_notice_by_id(notice_id)
     if notice:
         return jsonify(notice)
     return jsonify({"error": "Notice not found"}), 404
 
-@app.route('/crawl', methods=['POST'])
+@app.route('/api/crawl', methods=['POST'])
 def crawl_notices():
     try:
         # 웹사이트에서 공지사항 크롤링
-        notices = crawler.get_notices(source="web")
+        notices = crawler.get_notices()
         # DB에 저장
         for notice in notices:
             db_manager.save_notice(notice)

@@ -5,40 +5,14 @@ from typing import List, Dict, Optional
 
 class NoticeCrawler:
     def __init__(self):
-        self.smart_url = "https://smart.knou.ac.kr/smart/5923/subview.do"
-        self.web_url = "https://www.knou.ac.kr/knou/board/notice/list.do"
+        self.web_url = "https://smart.knou.ac.kr/smart/5923/subview.do"
         
-    def get_notices(self, source: str = "smart") -> List[Dict]:
-        """
-        방송통신대학교 공지사항을 크롤링하는 메서드
-        
-        Args:
-            source (str): 크롤링할 소스 ('smart' 또는 'web')
-            
-        Returns:
-            List[Dict]: 공지사항 목록
-        """
+    def get_notices(self) -> List[Dict]:
         try:
-            if source == "smart":
-                return self._crawl_smart_campus()
-            else:
-                return self._crawl_web()
+            return self._crawl_web()
         except Exception as e:
             print(f"크롤링 중 오류 발생: {str(e)}")
             return []
-    
-    def _crawl_smart_campus(self) -> List[Dict]:
-        """스마트캠퍼스에서 공지사항 크롤링"""
-        response = requests.get(self.smart_url)
-        response.raise_for_status()
-        
-        soup = BeautifulSoup(response.text, 'html.parser')
-        notices = []
-        
-        # TODO: 스마트캠퍼스 크롤링 로직 구현
-        # 현재는 기본 구조만 있음
-        
-        return notices
     
     def _crawl_web(self) -> List[Dict]:
         """일반 웹사이트에서 공지사항 크롤링"""
@@ -47,6 +21,9 @@ class NoticeCrawler:
         soup = BeautifulSoup(response.text, "html.parser")
 
         notices = []
+
+        print(">>>>>>>>>>>>>>>>notice ")
+        print(soup)
         for row in soup.select("table.board_list tbody tr"):
             title_tag = row.select_one("td.title a")
             date_tag = row.select_one("td.date")
