@@ -19,13 +19,23 @@ brew tap mongodb/brew
 brew install mongodb-community
 ```
 
-### 2. uv 설치
+### 2. uv settings
 
 - uv install (https://docs.astral.sh/uv/getting-started/installation)
 
 ```
 uv init
+
+uv python install 3.8
+
+uv venv --python 3.8
+
+source .venv/bin/activate
 ```
+
+### 3. Test
+
+python -m unittest [filename]
 
 
 ## 개발 환경 설정

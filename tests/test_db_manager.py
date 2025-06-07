@@ -85,7 +85,7 @@ class TestDatabaseManager(unittest.TestCase):
 
     def test_text_search(self):
         """텍스트 검색 테스트"""
-        self.db_manager.notices = self.test_collection
+        self.db_manage설치r.notices = self.test_collection
         self.db_manager.init_db()
 
         # 테스트 데이터 저장

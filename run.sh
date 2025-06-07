@@ -51,21 +51,17 @@ NC='\033[0m' # No Color
 
 # echo -e "${GREEN}테스트가 성공적으로 완료되었습니다.${NC}"
 
-# uv execute
-
-uv run app.py
-
 
 
 # Python 서버 실행 (백그라운드)
 echo -e "${YELLOW}Python 서버를 시작합니다...${NC}"
-python3.13 app.py &
+uv run app.py &
 PYTHON_PID=$!
 
 # 프론트엔드 서버 실행 (간단한 HTTP 서버 사용)
 echo -e "${YELLOW}프론트엔드 서버를 시작합니다...${NC}"
 cd frontend
-python3.13 -m http.server 8000 &
+python -m http.server 5000 &
 FRONTEND_PID=$!
 
 # 프로세스 종료 함수
@@ -80,8 +76,8 @@ cleanup() {
 trap cleanup SIGINT
 
 echo -e "${GREEN}서버가 시작되었습니다.${NC}"
-echo -e "${GREEN}Python 서버: http://localhost:5000${NC}"
-echo -e "${GREEN}프론트엔드: http://localhost:8000${NC}"
+echo -e "${GREEN}Python 서버: http://localhost:8000${NC}"
+echo -e "${GREEN}프론트엔드: http://localhost:5000${NC}"
 echo -e "${YELLOW}종료하려면 Ctrl+C를 누르세요.${NC}"
 
 # 프로세스가 종료될 때까지 대기

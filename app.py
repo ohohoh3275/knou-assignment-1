@@ -1,22 +1,25 @@
 from app.models.db_manager import NoticeDBManager
-from flask import Flask, jsonify
-from flask_cors import CORS
+# from flask import Flask, jsonify
+# from flask_cors import CORS
 # from db_manager import DBManager
 from app.crawler.notice_crawler import NoticeCrawler
-import os
-from dotenv import load_dotenv
+import uvicorn
+from fastapi import FastAPI
+
 
 # 환경 변수 로드
-load_dotenv()
+# load_dotenv()
 
-app = Flask(__name__)
-# CORS 설정 추가
-CORS(app, resources={r"/*": {"origins": "*"}})
+# app = Flask(__name__)
+# # CORS 설정 추가
+# CORS(app, resources={r"/*": {"origins": "*"}})
 
 # MongoDB 연결
 db_manager = NoticeDBManager()
 # 크롤러 초기화
 crawler = NoticeCrawler()
+
+app = FastAPI()
 
 @app.route('/api/notices', methods=['GET'])
 def get_notices():
@@ -42,5 +45,5 @@ def crawl_notices():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000) 
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
