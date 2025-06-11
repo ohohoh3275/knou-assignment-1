@@ -15,16 +15,16 @@ NC='\033[0m' # No Color
 # fi
 
 # # 가상환경이 없으면 생성
-# if [ ! -d "venv" ]; then
-#     echo -e "${YELLOW}기존 venv 삭제...${NC}"
-#     rm -rf venv
-
-#     echo -e "${YELLOW}가상환경을 생성합니다...${NC}"
-#     python3 -m venv venv
-# fi
+if [ ! -d ".venv" ]; then
+    echo -e "${YELLOW}기존 venv 삭제...${NC}"
+    uv venv --python 3.8
+else
+    echo -e "${YELLOW}가상환경을 생성합니다...${NC}"
+    python3 -m venv venv
+fi
 
 # # 가상환경 활성화
-# source venv/bin/activate
+source .venv/bin/activate
 
 # # requirements.txt가 있으면 패키지 설치
 # if [ -f "requirements.txt" ]; then
@@ -38,10 +38,9 @@ NC='\033[0m' # No Color
 #     cp .env.example .env
 # fi
 
-# # 테스트 실행
-# echo -e "${YELLOW}테스트를 실행합니다...${NC}"
-# python3 -m unittest discover -s tests -p "test_*.py"
-# TEST_RESULT=$?
+# database connected -테스트 실행
+echo -e "${YELLOW} Database connected 테스트를 실행합니다...${NC}"
+python3 -m unittest tests.test_mongodb_connected
 
 # # 테스트 실패 시 종료
 # if [ $TEST_RESULT -ne 0 ]; then

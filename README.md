@@ -13,11 +13,7 @@
 
 ### 1. MongoDB 설치 (brew)
 
-```bash
-# Homebrew를 통한 MongoDB 설치
-brew tap mongodb/brew
-brew install mongodb-community
-```
+`./mongodb.sh`
 
 ### 2. uv settings
 
@@ -33,13 +29,9 @@ uv venv --python 3.8
 source .venv/bin/activate
 ```
 
-### 3. Test
-
-python -m unittest [filename]
-
-
 ## 개발 환경 설정
 
 1. Python 3.8 이상 설치
 2. MongoDB 설치
-3. ./run.sh (chmod +x run.sh)
+3. uv pip install -r <(uv pip compile pyproject.toml)
+4. ./run.sh (chmod +x run.sh)
