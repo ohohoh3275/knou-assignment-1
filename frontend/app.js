@@ -57,16 +57,39 @@ function displayNotices(notices) {
   noticeList.innerHTML = notices
     .map(
       (notice) => `
-        <div class="notice-item" onclick="showDetail('${notice.id}')">
-            <h3 class="notice-title">${notice.title}</h3>
-            <div class="notice-meta">
-                <span class="notice-date">${formatDate(notice.date)}</span>
+        <div class="notice-item">
+            <div class="notice-header" onclick="toggleDetail(${notice.id})">
+                <h3 class="notice-title">${notice.title}</h3>
+                <div class="notice-meta">
+                    <span class="notice-date">${formatDate(notice.date)}</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+            </div>
+            <div class="notice-content" id="notice-content-${
+              notice.id
+            }" style="display: none">
+                <div class="notice-body">${notice.content}</div>
             </div>
         </div>
     `
     )
     .join("");
   return notices;
+}
+
+// 상세 내용 토글
+function toggleDetail(noticeId) {
+  const content = document.getElementById(`notice-content-${noticeId}`);
+  const header = content.previousElementSibling;
+  const toggleIcon = header.querySelector(".toggle-icon");
+
+  if (content.style.display === "none") {
+    content.style.display = "block";
+    toggleIcon.textContent = "▲";
+  } else {
+    content.style.display = "none";
+    toggleIcon.textContent = "▼";
+  }
 }
 
 // 공지사항 상세 정보 가져오기
