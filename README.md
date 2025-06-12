@@ -15,13 +15,13 @@
 `./run.sh (chmod +x run.sh)`
 
 ## 기능
+- [X] 공지사항 자동 크롤링
+- [X] 웹 인터페이스를 통한 공지사항 표시
+- [ ] ai 요약 기능
+- [ ] MongoDB(or cache)를 사용한 데이터 저장
+- [ ] 테스트 자동화
+- [ ] dockerize
 
-[v] 공지사항 자동 크롤링
-[v] 웹 인터페이스를 통한 공지사항 표시
-[] ai 요약 기능
-[] MongoDB(or cache)를 사용한 데이터 저장
-[] 테스트 자동화
-[] dockerize
 
 ## additional info
 - `npx playwright install`
