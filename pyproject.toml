@@ -12,4 +12,6 @@ dependencies = [
     "uvicorn[standard]>=0.33.0",
     "pydantic==2.10.6",
     "playwright",
+    "aiohttp",
+    "dotenv",
 ]

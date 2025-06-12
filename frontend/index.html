@@ -12,22 +12,80 @@
         <h1>공지사항</h1>
       </header>
 
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="list">목록</button>
+        <button class="tab-btn" data-tab="list-summary">목록 요약</button>
+        <button class="tab-btn" data-tab="summary">상세 요약</button>
+      </div>
+
       <main>
-        <div id="notice-list" class="notice-list">
-          <!-- 공지사항 목록이 여기에 동적으로 추가됩니다 -->
+        <div class="tab-content" id="list">
+          <div class="loading">
+            <div class="loading-spinner"></div>
+            <span>공지사항을 불러오는 중입니다...</span>
+          </div>
+          <div id="notice-list" class="notice-list">
+            <!-- 공지사항 목록이 여기에 동적으로 추가됩니다 -->
+          </div>
         </div>
 
-        <div id="notice-detail" class="notice-detail hidden">
-          <button class="back-button" onclick="showList()">
-            ← 목록으로 돌아가기
-          </button>
-          <div class="detail-content">
-            <h2 id="detail-title"></h2>
-            <div class="detail-meta">
-              <span id="detail-date"></span>
-              <span id="detail-category"></span>
+        <div class="tab-content" id="detail" style="display: none">
+          <div class="loading">
+            <div class="loading-spinner"></div>
+            <span>상세 내용을 불러오는 중입니다...</span>
+          </div>
+          <div id="notice-detail" class="notice-detail hidden">
+            <button class="back-button" onclick="showList()">
+              ← 목록으로 돌아가기
+            </button>
+            <div class="detail-content">
+              <h2 id="detail-title"></h2>
+              <div class="detail-meta">
+                <span id="detail-date"></span>
+                <span id="detail-category"></span>
+              </div>
+              <div id="detail-body" class="detail-body"></div>
             </div>
-            <div id="detail-body" class="detail-body"></div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="list-summary" style="display: none">
+          <div class="loading">
+            <div class="loading-spinner"></div>
+            <span>목록 요약을 생성하는 중입니다...</span>
+          </div>
+          <div class="summary-container">
+            <h2>목록 요약</h2>
+            <div class="summary-controls">
+              <select id="listSummaryType">
+                <option value="keyword">키워드 추출</option>
+                <option value="summary">문장 요약</option>
+              </select>
+              <button id="generateListSummary">요약 생성</button>
+            </div>
+            <div class="summary-result">
+              <div id="listSummaryContent"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="summary" style="display: none">
+          <div class="loading">
+            <div class="loading-spinner"></div>
+            <span>상세 요약을 생성하는 중입니다...</span>
+          </div>
+          <div class="summary-container">
+            <h2>AI 요약</h2>
+            <div class="summary-controls">
+              <select id="summaryType">
+                <option value="keyword">키워드 추출</option>
+                <option value="summary">문장 요약</option>
+              </select>
+              <button id="generateSummary">요약 생성</button>
+            </div>
+            <div class="summary-result">
+              <div id="summaryContent"></div>
+            </div>
           </div>
         </div>
       </main>
