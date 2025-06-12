@@ -1,49 +1,41 @@
-from app.models.db_manager import NoticeDBManager
-# from flask import Flask, jsonify
-# from flask_cors import CORS
-# from db_manager import DBManager
-from app.crawler.notice_crawler import NoticeCrawler
-import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
+import uvicorn
+from app.models.db_manager import NoticeDBManager
+from app.crawler.notice_crawler import NoticeCrawler
+from dotenv import load_dotenv
 
 # 환경 변수 로드
-# load_dotenv()
+load_dotenv()
 
-# app = Flask(__name__)
-# # CORS 설정 추가
-# CORS(app, resources={r"/*": {"origins": "*"}})
+app = FastAPI(
+    title="KNOU Notice API",
+    description="한국방송통신대학교 공지사항 API",
+    version="1.0.0"
+)
 
-# MongoDB 연결
+# CORS 설정
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+# 데이터베이스 매니저 초기화
 db_manager = NoticeDBManager()
-# 크롤러 초기화
 crawler = NoticeCrawler()
 
-app = FastAPI()
-
-@app.route('/api/notices', methods=['GET'])
-def get_notices():
-    notices = db_manager.get_all_notices()
-    return jsonify(notices)
-
-@app.route('/api/notices/<notice_id>', methods=['GET'])
-def get_notice(notice_id):
-    notice = db_manager.get_notice_by_id(notice_id)
-    if notice:
-        return jsonify(notice)
-    return jsonify({"error": "Notice not found"}), 404
-
-@app.route('/api/crawl', methods=['POST'])
-def crawl_notices():
+@app.get("/api/notices")
+async def get_notices_api():
     try:
-        # 웹사이트에서 공지사항 크롤링
-        notices = crawler.get_notices()
-        # DB에 저장
-        for notice in notices:
-            db_manager.save_notice(notice)
-        return jsonify({"message": f"{len(notices)}개의 공지사항을 크롤링했습니다."})
+        notices = await crawler.async_playwright()
+        return {"notices": notices}  # 리스트를 딕셔너리로 감싸서 반환
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

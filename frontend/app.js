@@ -1,5 +1,5 @@
 // API 엔드포인트
-const API_BASE_URL = "http://localhost:5000/api";
+const API_BASE_URL = "http://localhost:8000/api";
 
 // DOM 요소
 const noticeList = document.getElementById("notice-list");
@@ -13,8 +13,10 @@ const detailBody = document.getElementById("detail-body");
 async function fetchNotices() {
   try {
     const response = await fetch(`${API_BASE_URL}/notices`);
+    console.log(response);
     const notices = await response.json();
-    displayNotices(notices);
+
+    displayNotices(notices.notices);
   } catch (error) {
     console.error("공지사항을 가져오는데 실패했습니다:", error);
     noticeList.innerHTML =
@@ -27,16 +29,16 @@ function displayNotices(notices) {
   noticeList.innerHTML = notices
     .map(
       (notice) => `
-        <div class="notice-item" onclick="showDetail('${notice._id}')">
+        <div class="notice-item" onclick="showDetail('${notice.id}')">
             <h3 class="notice-title">${notice.title}</h3>
             <div class="notice-meta">
                 <span class="notice-date">${formatDate(notice.date)}</span>
-                <span class="notice-category">${notice.category}</span>
             </div>
         </div>
     `
     )
     .join("");
+  return notices;
 }
 
 // 공지사항 상세 정보 가져오기

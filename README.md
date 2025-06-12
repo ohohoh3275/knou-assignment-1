@@ -4,34 +4,19 @@
 
 ## 기능
 
-- 공지사항 자동 크롤링
-- 웹 인터페이스를 통한 공지사항 조회
-- MongoDB를 사용한 데이터 저장
-- 자동화된 테스트
+[v] 공지사항 자동 크롤링
+[v] 웹 인터페이스를 통한 공지사항 표시
+[] ai 요약 기능
+[] MongoDB를 사용한 데이터 저장
+[] 자동화된 테스트
 
-## 설치 및 실행
+## 실행 환경
 
-### 1. MongoDB 설치 (brew)
+1. Python 3.8 이상
+2. MongoDB - `./mongodb.sh (ubuntu)`
+3. uv 설치 - https://docs.astral.sh/uv/guides/install-python/
 
-`./mongodb.sh`
+## 실행 순서
 
-### 2. uv settings
-
-- uv install (https://docs.astral.sh/uv/getting-started/installation)
-
-```
-uv init
-
-uv python install 3.8
-
-uv venv --python 3.8
-
-source .venv/bin/activate
-```
-
-## 개발 환경 설정
-
-1. Python 3.8 이상 설치
-2. MongoDB 설치
-3. uv pip install -r <(uv pip compile pyproject.toml)
-4. ./run.sh (chmod +x run.sh)
+2.
+3. ./run.sh (chmod +x run.sh)

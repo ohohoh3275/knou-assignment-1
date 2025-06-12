@@ -26,11 +26,11 @@ fi
 # # 가상환경 활성화
 source .venv/bin/activate
 
-# # requirements.txt가 있으면 패키지 설치
-# if [ -f "requirements.txt" ]; then
-#     echo -e "${YELLOW}필요한 패키지를 설치합니다...${NC}"
-#     uv pip install -r requirements.txt
-# fi
+# uv 패키지 설치
+if [ -f "requirements.txt" ]; then
+    echo -e "${YELLOW}필요한 패키지를 설치합니다...${NC}"
+    uv pip install -r <(uv pip compile pyproject.toml)
+fi
 
 # # .env 파일이 없으면 .env.example을 복사
 # if [ ! -f ".env" ] && [ -f ".env.example" ]; then
