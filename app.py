@@ -26,14 +26,14 @@ app.add_middleware(
 
 
 # 데이터베이스 매니저 초기화
-db_manager = NoticeDBManager()
+# db_manager = NoticeDBManager()
 crawler = NoticeCrawler()
 
 @app.get("/api/notices")
 async def get_notices_api():
     try:
         notices = await crawler.async_playwright()
-        return {"notices": notices}  # 리스트를 딕셔너리로 감싸서 반환
+        return {"notices": notices}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

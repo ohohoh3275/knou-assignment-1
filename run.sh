@@ -27,10 +27,13 @@ fi
 source .venv/bin/activate
 
 # uv 패키지 설치
-if [ -f "requirements.txt" ]; then
-    echo -e "${YELLOW}필요한 패키지를 설치합니다...${NC}"
-    uv pip install -r <(uv pip compile pyproject.toml)
-fi
+echo -e "${YELLOW}필요한 패키지를 설치합니다...${NC}"
+uv pip install -r <(uv pip compile pyproject.toml)
+
+# playwright install
+echo -e "${YELLOW}playwright 패키지를 설치합니다...${NC}"
+python3 -m playwright install
+
 
 # # .env 파일이 없으면 .env.example을 복사
 # if [ ! -f ".env" ] && [ -f ".env.example" ]; then

@@ -7,7 +7,6 @@ class NoticeCrawler:
         self.base_url = "https://smart.knou.ac.kr/smart/5923/subview.do"
         
     async def get_notice_detail(self, page, subject_element) -> Dict[str, Any]:
-        """공지사항의 상세 내용을 가져옵니다."""
         try:
             # 제목 요소 클릭
             await subject_element.click()
@@ -15,14 +14,12 @@ class NoticeCrawler:
             
             # 상세 내용 가져오기
             content = await page.locator(".view-con").text_content()
-            print(content)
             return {"content": content.strip()}
         except Exception as e:
             print(f"상세 내용 크롤링 중 오류 발생: {str(e)}")
             return {"content": ""}
         
     async def async_playwright(self) -> List[Dict[str, Any]]:
-        """Playwright를 사용하여 페이지 연결을 테스트합니다."""
         async with async_playwright() as p:
             browser = await p.chromium.launch(headless=True)
             page = await browser.new_page()

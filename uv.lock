@@ -1101,7 +1101,7 @@ requires-dist = [
     { name = "beautifulsoup4", specifier = ">=4.13.4" },
     { name = "dotenv" },
     { name = "fastapi", extras = ["standard"], specifier = "==0.115.12" },
-    { name = "playwright" },
+    { name = "playwright", extras = ["standard"] },
     { name = "pydantic", specifier = "==2.10.6" },
     { name = "pymongo", specifier = ">=4.10.1" },
     { name = "requests", specifier = ">=2.32.3" },

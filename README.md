@@ -20,3 +20,6 @@
 [] MongoDB(or cache)를 사용한 데이터 저장
 [] 테스트 자동화
 [] dockerize
+
+## additional info
+- `npx playwright install`
